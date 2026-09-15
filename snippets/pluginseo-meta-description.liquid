@@ -10,7 +10,7 @@
 
 {%- assign mDF = 's' -%}
 {%- assign metaDescriptionManuallyEntered = true -%}
-{%- assign defaultMetaDescription = [pageUnderscoreDescription] | escape -%}
+{%- assign defaultMetaDescription = self[pageUnderscoreDescription] | escape -%}
 
 {% comment %} object can assign a specific SEO description {% endcomment %} 
 {%- assign shopifyHasMetaDescriptionAndSeoOverride = false -%}
@@ -87,14 +87,14 @@
 
   {%- if shopifyHasMetaDescriptionAndSeoOverride == true -%}
     {% comment %} Check if the SEO override is different from content; i.e. manually set {% endcomment %}
-    {%- capture pageUnderscoreDescriptionForCompare -%}{{ [pageUnderscoreDescription] | replace: ' ','' }}{%- endcapture -%}
+    {%- capture pageUnderscoreDescriptionForCompare -%}{{ self[pageUnderscoreDescription] | replace: ' ', '' }}{%- endcapture -%}
     {%- capture truncateLength -%}{{ pageUnderscoreDescriptionForCompare | size }}{%- endcapture -%}
     {%- capture defaultMetaDescriptionForCompare -%}{{ defaultMetaDescription | strip_newlines | replace: ' ','' | strip_newlines | strip_html | escape | truncate: truncateLength, '' }}{%- endcapture -%}
     {%- if pageUnderscoreDescriptionForCompare != defaultMetaDescriptionForCompare -%}
-      {%- assign metaDescriptionToParse = [pageUnderscoreDescription] | escape -%}
+      {%- assign metaDescriptionToParse = self[pageUnderscoreDescription] | escape -%}
     {%- endif -%}
   {%- else -%}
-    {%- assign metaDescriptionToParse = [pageUnderscoreDescription] | escape -%}
+    {%- assign metaDescriptionToParse = self[pageUnderscoreDescription] | escape -%}
   {%- endif -%}
 
   {%- if metaDescriptionToParse == blank or metaDescriptionToParse == nil -%}
@@ -174,3 +174,28 @@
     <meta name="description" content="{{ metaDescription | strip_newlines | strip_html | escape }}" />
   {%- endif -%}
 {%- endif -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- assign defaultMetaDescription = [pageUnderscoreDescription] | escape
+    -%}"
+  to: "{%- assign defaultMetaDescription = self[pageUnderscoreDescription] | escape
+    -%}"
+  position: 428..508
+- from: "{{ [pageUnderscoreDescription] | replace: ' ','' }}"
+  to: "{{ self[pageUnderscoreDescription] | replace: ' ', '' }}"
+  position: 4488..4544
+- from: "{%- assign metaDescriptionToParse = [pageUnderscoreDescription] | escape
+    -%}"
+  to: "{%- assign metaDescriptionToParse = self[pageUnderscoreDescription] | escape
+    -%}"
+  position: 4961..5041
+- from: "{%- assign metaDescriptionToParse = [pageUnderscoreDescription] | escape
+    -%}"
+  to: "{%- assign metaDescriptionToParse = self[pageUnderscoreDescription] | escape
+    -%}"
+  position: 5079..5159
+{% endcomment %}

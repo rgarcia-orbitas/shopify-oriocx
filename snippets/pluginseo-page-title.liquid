@@ -9,7 +9,7 @@
 {%- endcomment -%}
 
 {%- assign pTF = 's' -%}
-{%- assign defaultPageTitle = [pageUnderscoreTitle] | escape -%}
+{%- assign defaultPageTitle = self[pageUnderscoreTitle] | escape -%}
 
 {% comment %} object can assign a specific SEO description {% endcomment %} 
 {%- assign shopifyHasTitleAndSeoOverride = false -%}
@@ -87,7 +87,7 @@
     {%- assign pTFTemp = '-te_df' -%}
   {%- endif -%}
 
-  {%- capture escapedPageUnderscoreTitle -%}{{ [pageUnderscoreTitle] | escape }}{%- endcapture -%}
+  {%- capture escapedPageUnderscoreTitle -%}{{ self[pageUnderscoreTitle] | escape }}{%- endcapture -%}
   {%- if shopifyHasTitleAndSeoOverride == true -%}
     {% comment %} Check if the SEO override is different from object title {% endcomment %}
     {%- capture defaultPageTitleForCompare -%}{{ defaultPageTitle | truncate: 70, "" | strip_html }}{%- endcapture -%}
@@ -178,3 +178,16 @@
   {%- endif -%}
   <title>{{ pageTitle | strip_html | strip_newlines }}</title>
 {%- endif -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- assign defaultPageTitle = [pageUnderscoreTitle] | escape -%}"
+  to: "{%- assign defaultPageTitle = self[pageUnderscoreTitle] | escape -%}"
+  position: 375..443
+- from: "{{ [pageUnderscoreTitle] | escape }}"
+  to: "{{ self[pageUnderscoreTitle] | escape }}"
+  position: 4022..4062
+{% endcomment %}

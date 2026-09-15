@@ -14,8 +14,8 @@
 {% capture pageUnderscoreTitleVar %}%% {{ pageUnderscoreTitle }} %%{% endcapture %}
 {% capture pageUnderscoreDescriptionVar %}%% {{ pageUnderscoreDescription }} %%{% endcapture %}
 
-{% capture parsed %}{{ template | replace: pageUnderscoreTitleVar, [pageUnderscoreTitle] }}{% endcapture %}
-{% capture parsed %}{{ parsed | replace: pageUnderscoreDescriptionVar, [pageUnderscoreDescription] }}{% endcapture %}
+{% capture parsed %}{{ template | replace: pageUnderscoreTitleVar, self[pageUnderscoreTitle] }}{% endcapture %}
+{% capture parsed %}{{ parsed | replace: pageUnderscoreDescriptionVar, self[pageUnderscoreDescription] }}{% endcapture %}
 
 {% assign splitUp = parsed | split: '%%' %}
 
@@ -36,12 +36,12 @@
       {% if liquidVar.size == 4 %}
 		    {% assign var2 = liquidVar[2] | strip %}
 			  {% assign var3 = liquidVar[3] | strip %}
-		    {% assign replaceWith = [entity][var1][var2][var3] %}
+		    {% assign replaceWith = self[entity][var1][var2][var3] %}
 	    {% elsif liquidVar.size == 3 %}
 		    {% assign var2 = liquidVar[2] | strip %}
-		    {% assign replaceWith = [entity][var1][var2] %}
+		    {% assign replaceWith = self[entity][var1][var2] %}
 	    {% else %}
-		    {% assign replaceWith = [entity][var1] %}
+		    {% assign replaceWith = self[entity][var1] %}
       {% endif %}
     {% endif %}
 
@@ -225,3 +225,27 @@
 {% endfor %}
 
 {{ parsed }}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{{ template | replace: pageUnderscoreTitleVar, [pageUnderscoreTitle] }}"
+  to: "{{ template | replace: pageUnderscoreTitleVar, self[pageUnderscoreTitle] }}"
+  position: 1349..1424
+- from: "{{ parsed | replace: pageUnderscoreDescriptionVar, [pageUnderscoreDescription]
+    }}"
+  to: "{{ parsed | replace: pageUnderscoreDescriptionVar, self[pageUnderscoreDescription]
+    }}"
+  position: 1461..1546
+- from: "{% assign replaceWith = [entity][var1][var2][var3] %}"
+  to: "{% assign replaceWith = self[entity][var1][var2][var3] %}"
+  position: 2356..2413
+- from: "{% assign replaceWith = [entity][var1][var2] %}"
+  to: "{% assign replaceWith = self[entity][var1][var2] %}"
+  position: 2504..2555
+- from: "{% assign replaceWith = [entity][var1] %}"
+  to: "{% assign replaceWith = self[entity][var1] %}"
+  position: 2578..2623
+{% endcomment %}
